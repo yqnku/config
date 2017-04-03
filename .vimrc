@@ -1,0 +1,355 @@
+"mkdir -p ~/.vim/autoload ~/.vim/bundle && \
+        "curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+        "git clone https://github.com/rkulla/pydiction.git
+        "git clone https://github.com/mattn/emmet-vim.git
+"git clone git://github.com/tpope/vim-commentary.git
+"git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
+"""" 不要使用vi的键盘模式，而是vim自己的
+set nocompatible
+""""侦测文件类型
+filetype on
+""""打开插件功能
+filetype plugin on
+""""激活matchit
+runtime macros/matchit.vim
+""""history文件中需要记录的行数
+set history=200
+""""在处理未保存或只读文件的时候，弹出确认
+set confirm
+""""与windows共享剪贴板
+set clipboard+=unnamed
+""""设置背景颜色
+set background=dark
+""""设置行号
+set nu
+""""显示相对行号
+set relativenumber
+""""语法高亮
+syntax on
+""""设置智能查找
+set smartcase
+""""状态行颜色
+highlight StatusLine guifg=SlateBlue guibg=Yellow
+highlight StatusLineNC guifg=Gray guibg=White
+set autoindent
+set smartindent
+""""设置tab键为4个空格，并且自动转换tab为四个空格
+set tabstop=4
+set expandtab
+set autoindent
+set shiftwidth=4
+""""不要生成swap文件，当buffer被丢弃的时候隐藏它
+setlocal noswapfile
+set bufhidden=hide
+""""高亮显示匹配的括号
+set showmatch
+""""在状态行上显示光标所在位置的行号和列号
+set ruler
+set rulerformat=%20(%2*%<%f%=\ %m%r\ %3l\ %c\ %p%%%))
+""""使回格键（backspace）正常处理indent, eol, start等
+set backspace=2
+""""在被分割的窗口间显示空白，便于阅读
+set fillchars=vert:\ ,stl:\ ,stlnc:\
+set incsearch
+set showcmd
+set autoread
+set completeopt=preview,menu
+""""设置编码
+set encoding=utf-8
+set fileencodings=utf-8,gb2312,gb18030,ucs-bom,gbk,cp936,latin-1
+""""设置不自动备份
+set nobackup
+""""启用鼠标
+""""set mouse=a
+""""自动补全括号引号
+inoremap ( ()<ESC>i
+inoremap [ []<ESC>i
+inoremap { {}<ESC>i
+"""""设置大括号自动对齐
+set cindent
+""""inoremap < <><ESC>i
+inoremap " ""<ESC>i
+inoremap ' ''<ESC>i
+""""启用折叠
+""""set foldenable
+set foldmethod=syntax
+" 用空格键来开关折叠
+nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+set nofoldenable
+" 当文件在外部被修改，自动更新该文件
+set autoread
+""""搜索模式忽略大小写
+set ignorecase
+""""设置搜索时高亮
+set hls
+""""ctrl + G 插入模式下删除一个字符
+""""map <c-g> <ESC>
+" Ctrl + K 插入模式下光标向上移动
+imap <c-k> <Up>
+" Ctrl + J 插入模式下光标向下移动
+imap <c-j> <Down>
+" Ctrl + H 插入模式下光标向左移动
+imap <c-h> <Left>
+" Ctrl + L 插入模式下光标向右移动
+imap <c-l> <Right>
+set laststatus=2                                      "启用状态栏信息
+set statusline=%t\ %1*%m%*\ %1*%r%*\ %2*%h%*%w%=%l%3*/%L(%p%%)%*,%c%V]\ [%b:0x%B]\ [%{&ft==''?'TEXT':toupper(&ft)},%{toupper(&ff)},%{toupper(&fenc!=''?&fenc:&enc)}%{&bomb?',BOM':''}%{&eol?'':',NOEOL'}]
+""""自动补全
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascrīpt set omnifunc=javascrīptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType c set omnifunc=ccomplete#Complete
+""""设置命令行模式下的tab按键为显示所有匹配项
+set wildmenu
+set wildmode=full
+""""映射%%为%:h<tab>
+cnoremap <expr> %% getcmdtype()==':'?expand('%:h').'/':'%%'
+""""设置path
+set path+=/home/yqnku/Programming/**
+""""编辑状态下 ctrl-u转换为大写
+inoremap <C-u> <esc>gUiwea
+inoremap jj <esc>
+
+""""au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+""""au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
+
+"""" pathogen
+execute pathogen#infect()
+"""" pydict
+let g:pydiction_location = '~/.vim/bundle/pydiction/complete-dict'
+let g:pydiction_menu_height = 5
+"""" emmet
+let g:user_emmet_leader_key='<tab>'
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+"""" nerdtree
+map <C-Z> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeDirArrowExpandable = '+'
+let g:NERDTreeDirArrowCollapsible = '-'
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+    exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+    exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+call NERDTreeHighlightFile('py', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
+call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
+call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
+
+
+
+
+""""""""""""""""""""""
+"""""新文件标题""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"新建.c,.h,.sh,.java,.py,.js文件，自动插入文件头 
+autocmd BufNewFile *.cpp,*.[ch],*.sh,*.tex,*.py,*.js,*.java,*.txt,*.html exec ":call SetTitle()" 
+""定义函数SetTitle，自动插入文件头 
+func SetTitle() 
+    "如果文件类型为.sh文件 
+    if &filetype == 'sh' 
+        call setline(1, "\#!/bin/bash") 
+        call append(line("."),"\#************************************************************************") 
+        call append(line(".")+1, "\# File Name: ".expand("%")) 
+        call append(line(".")+2, "\# Author: quicy") 
+        call append(line(".")+3, "\# Email: xiqian013@live.com") 
+        call append(line(".")+4, "\# Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
+        call append(line(".")+5, "\#************************************************************************") 
+        call append(line(".")+6, "") 
+	"如果文件类型为.py文件 
+    endif
+	if &filetype == 'python' 
+		call setline(1, "\#!/usr/bin/python3") 
+        call append(line("."), "\# -*- coding: <utf-8> -*-")
+		call append(line(".")+1, "")
+		call append(line(".")+2, "\#************************************************************************") 
+        call append(line(".")+3, "\# File Name: ".expand("%")) 
+        call append(line(".")+4, "\# Author: quicy") 
+        call append(line(".")+5, "\# Email: xiqian013@live.com ") 
+        call append(line(".")+6, "\# Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
+        call append(line(".")+7, "\#************************************************************************") 
+        call append(line(".")+8, "")    
+    endif
+    "如果文件类型为.cpp文件 
+    if &filetype == 'cpp'
+        call setline(1, "/*************************************************************************") 
+        call append(line("."), "    > File Name: ".expand("%")) 
+        call append(line(".")+1, "    > Author: quicy") 
+        call append(line(".")+2, "    > Email: xiqian013@live.com ") 
+        call append(line(".")+3, "    > Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
+        call append(line(".")+4, " ************************************************************************/") 
+        call append(line(".")+5, "")
+        call append(line(".")+6, "#include<iostream>")
+        call append(line(".")+7, "using namespace std;")
+		call append(line(".")+8, "int main()")
+		call append(line(".")+9, "{")
+		call append(line(".")+10, "    return 0;")
+		call append(line(".")+11, "}")
+		call append(line(".")+12, "")    
+    endif
+    "如果文件类型为.c文件 
+    if &filetype == 'c'
+        call setline(1, "/*************************************************************************") 
+        call append(line("."), "    > File Name: ".expand("%")) 
+        call append(line(".")+1, "    > Author: quicy") 
+        call append(line(".")+2, "    > Email: xiqian013@live.com ") 
+        call append(line(".")+3, "    > Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
+        call append(line(".")+4, " ************************************************************************/") 
+        call append(line(".")+5, "")
+        call append(line(".")+6, "#include<stdio.h>")
+		call append(line(".")+7, "int main()")
+		call append(line(".")+8, "{")
+		call append(line(".")+9, "    return 0;")
+		call append(line(".")+10, "}")
+        call append(line(".")+11, "")
+    endif
+    "如果文件类型为.javascript文件 
+    if &filetype == 'javascript'
+        call setline(1, "/*************************************************************************") 
+        call append(line("."), "    > File Name: ".expand("%")) 
+        call append(line(".")+1, "    > Author: quicy") 
+        call append(line(".")+2, "    > Email: xiqian013@live.com ") 
+        call append(line(".")+3, "    > Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
+        call append(line(".")+4, " ************************************************************************/") 
+        call append(line(".")+5, "")
+        call append(line(".")+6, "'use strict';")
+    endif
+    "如果文件类型为.java文件 
+    if &filetype == 'java'
+        call setline(1, "/**") 
+        call append(line("."), " *@author:quicy") 
+        call append(line(".")+1, " *@version:1.0") 
+        call append(line(".")+2, " *File Name: ".expand("%")) 
+        call append(line(".")+3, " *Email: xiqian013@live.com ") 
+        call append(line(".")+4, " *Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
+        call append(line(".")+5, " */")
+        call append(line(".")+6, "")
+        call append(line(".")+7, "public class ".expand("%:r"))
+        call append(line(".")+8, "{")
+        call append(line(".")+9, "    public static void main (String []args)")
+        call append(line(".")+10, "    {")
+        call append(line(".")+11, "    }")
+        call append(line(".")+12, "}")
+    endif
+    "如果文件类型为.tex文件
+    if &filetype == 'plaintex'
+        call setline(1, "%*************************************************************************") 
+        call append(line("."), "%    > File Name: ".expand("%")) 
+        call append(line(".")+1, "%    > Author: quicy") 
+        call append(line(".")+2, "%    > Email: xiqian013@live.com ") 
+        call append(line(".")+3, "%    > Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
+        call append(line(".")+4, "%************************************************************************") 
+        call append(line(".")+5, "")
+        call append(line(".")+6, "\\documentclass[UTF8,a4paper,12pt]{ctexart}")
+        call append(line(".")+7, "\\usepackage{amsmath}")
+        call append(line(".")+8, "\\usepackage{amssymb}")
+        call append(line(".")+9, "\\usepackage{geometry}")
+        call append(line(".")+10, "\\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}")
+        call append(line(".")+11, "\\usepackage{hyperref}")
+        call append(line(".")+12, "\\usepackage{\\baselineskip}{24pt}")
+        call append(line(".")+13, "\\pagestyle{plain}")
+        call append(line(".")+14, "\\begin{document}")
+        call append(line(".")+15, "    \\section*{}")
+        call append(line(".")+16, "\\end{document}")
+    endif 
+    "如果文件类型为.txt文件
+    if &filetype == 'text'
+        call setline(1, "/*************************************************************************") 
+        call append(line("."), "    > File Name: ".expand("%")) 
+        call append(line(".")+1, "    > Author: quicy") 
+        call append(line(".")+2, "    > Email: xiqian013@live.com ") 
+        call append(line(".")+3, "    > Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
+        call append(line(".")+4, " ************************************************************************/") 
+        call append(line(".")+5, "")
+    endif
+    "如果文件类型为.html文件
+    if &filetype == 'html'
+        call setline(1, "<!DOCTPYE html>") 
+        call append(line("."), "<html lang=\"zh-Hans\">") 
+        call append(line(".")+1, "<head>") 
+        call append(line(".")+2, "    <meta charset=\"UTF-8\">") 
+        call append(line(".")+3, "    <title></title>") 
+        call append(line(".")+4, "</head>") 
+        call append(line(".")+5, "<body>")
+        call append(line(".")+6, "</body>")
+        call append(line(".")+7, "</html>")
+    endif
+    "新建文件后，自动定位到文件末尾
+    autocmd BufNewFile * normal G
+endfunc 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+
+
+
+"键盘命令
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+nmap <leader>w :w!<cr>
+nmap <leader>f :find<cr>
+
+""""按虚拟行移动
+noremap <silent><expr> j (v:count==0?'gj':'j')
+noremap <silent><expr> k (v:count==0?'gk':'k')
+map <F12> gg=G
+" 选中状态下 Ctrl+c 复制
+vmap <C-c> "+y
+"去空行  
+nnoremap <F2> :g/^\s*$/d<CR> 
+"比较文件  
+nnoremap <C-F2> :vert diffsplit 
+"新建标签  
+map <M-F2> :tabnew<CR>  
+"列出当前目录文件  
+map <F3> :tabnew .<CR>  
+"打开树状文件目录  
+map <C-F3> \be  
+"C，C++ 按F5编译运行
+map <F5> :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+    exec "w"
+    if &filetype == 'c'
+        exec "!g++ % -o %<"
+        exec "! ./%<"
+    elseif &filetype == 'cpp'
+        exec "!g++ % -o %<"
+        exec "! ./%<"
+    elseif &filetype == 'java' 
+        exec "!javac %" 
+        exec "!java %<"
+    elseif &filetype == 'sh'
+        :!./%
+    elseif &filetype == 'python'
+        exec "!python3 %"
+    endif
+endfunc
+"C,C++的调试
+map <F8> :call Rungdb()<CR>
+func! Rungdb()
+    exec "w"
+    exec "!g++ % -g -o %<"
+    exec "!gdb ./%<"
+endfunc
+
+
+
+""""这只是临时的按键映射
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+
