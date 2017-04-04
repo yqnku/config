@@ -5,3 +5,5 @@ VIM,Tmux.Zsh and others
 
 有时间慢慢写吧
 
+http://yijiebuyi.com/blog/36955b84c57e338dd8255070b80829bf.html
+Removing ~/.zcompdump and restarting all shells fixed it for me as well!
