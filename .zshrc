@@ -87,3 +87,29 @@ source $ZSH/oh-my-zsh.sh
 HIST_STAMPS="yyyy-mm-dd"
 source /etc/zsh_command_not_found
 #source ~/.oh-my-zsh/custom/plugins/incr/incr*.zsh
+#
+alias vi='vim'
+alias -s py=vi
+alias -s js=vi
+alias -s java=vi
+alias -s txt=vi
+alias -s html=vi
+alias -s gz='tar -xzvf'
+alias -s tgz='tar -xzvf'
+alias -s zip='unzip'
+alias -s bz2='tar -xjvf'
+#启用 cd 命令的历史纪录，cd -[TAB]进入历史路径  
+setopt AUTO_PUSHD  
+#相同的历史路径只保留一个  
+setopt PUSHD_IGNORE_DUPS 
+alias ga='git add .'
+alias gd='git diff'
+alias gcm='git checkout master'
+alias gcd='git checkout dev'
+alias gcmsg='git commit -m'
+alias gcl='git clone'
+alias gps='git push origin master'
+alias gpl='git pull origin master'
+
+
+
