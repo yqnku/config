@@ -1,0 +1,9 @@
+[user]
+	name = quicy-server
+	email = zqye@quicy.cn
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+[i18n]
+    logoutputencoding = utf-8
+[core]
+    editor = vim
